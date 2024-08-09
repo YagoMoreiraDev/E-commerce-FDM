@@ -6,6 +6,7 @@ import lombok.Getter;
 
 import java.math.BigDecimal;
 import java.util.HashSet;
+import java.util.List;
 import java.util.Set;
 
 @Data
@@ -30,6 +31,14 @@ public class Product {
             inverseJoinColumns = @JoinColumn(name = "category_id"))
     private Set<Category> categories = new HashSet<>();
 
+    @Getter
+    @OneToMany(mappedBy = "id.product")
+    private Set<OrderItem> items = new HashSet<>();
+
     public Product() {
+    }
+
+    public List<Order> getOrders() {
+        return items.stream().map(x -> x.getOrder()).toList();
     }
 }
