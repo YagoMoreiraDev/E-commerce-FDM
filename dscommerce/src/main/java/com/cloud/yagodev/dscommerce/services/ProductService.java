@@ -3,6 +3,7 @@ package com.cloud.yagodev.dscommerce.services;
 import com.cloud.yagodev.dscommerce.domain.dtos.ProductDTO;
 import com.cloud.yagodev.dscommerce.domain.entities.Product;
 import com.cloud.yagodev.dscommerce.repositories.ProductRepository;
+import org.springframework.beans.BeanUtils;
 import org.springframework.data.domain.Page;
 import org.springframework.data.domain.Pageable;
 import org.springframework.stereotype.Service;
@@ -28,5 +29,12 @@ public class ProductService {
     public Page<ProductDTO> findAll(Pageable pageable) {
         Page<Product> products = productRepository.findAll(pageable);
         return products.map(x -> new ProductDTO(x));
+    }
+
+    @Transactional
+    public ProductDTO insert(ProductDTO productDTO) {
+        var product = new Product();
+        BeanUtils.copyProperties(productDTO, product);
+        return new ProductDTO(productRepository.save(product));
     }
 }
