@@ -37,4 +37,17 @@ public class ProductService {
         BeanUtils.copyProperties(productDTO, product);
         return new ProductDTO(productRepository.save(product));
     }
+
+    @Transactional
+    public ProductDTO update(Long id, ProductDTO productDTO) {
+        Product product = productRepository.getReferenceById(id);
+        product.setName(productDTO.getName());
+        product.setDescription(productDTO.getDescription());
+        product.setPrice(productDTO.getPrice());
+        product.setImgUrl(productDTO.getImgUrl());
+
+        product = productRepository.save(product);
+
+        return new ProductDTO(product);
+    }
 }
